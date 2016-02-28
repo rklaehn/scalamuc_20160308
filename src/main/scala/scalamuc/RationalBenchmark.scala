@@ -7,7 +7,7 @@ import org.apache.commons.math3.fraction.BigFraction
 /**
   * Rational performance comparison
   */
-object Demo5 extends App {
+object RationalBenchmark extends App {
 
   val spireRats = (1 until 40).map(x => Rational(1, x))
   val commonFraction = (1 until 40).map(x => new BigFraction(1, x))

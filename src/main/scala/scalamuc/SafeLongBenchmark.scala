@@ -9,7 +9,7 @@ import spire.math.{SafeLong, Rational}
 /**
   * Integer performance comparison
   */
-object Demo6 extends App {
+object SafeLongBenchmark extends App {
 
   val spires = (1 until 100000).map(x => SafeLong(x))
   val bigIntegers = (1 until 100000).map(x => BigInteger.valueOf(x))

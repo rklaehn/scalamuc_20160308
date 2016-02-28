@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Title
+
+An introduction to the spire math library
+
+---
+
+# About me
+
+- Freelance scala and akka consultant
+  - currently working for mewe.com
+  - fromerly german space operations center
+- Contributing to scala since 2012
+  - Significant improvements to Set and Map in 2.11
+  - Bugfixes and small improvements in 2.10
+- Contributing to spire since 2014
+  - Maintainer
+  - Rational and SafeLong performance improvements
+  - Bugfixes
+
+---
+
+# Agenda
+
+1. Introduction
+2. Deep-dive
+3. ...
+
+---
+
+# Introduction
+
+```scala
+def foo = bar
+```
+
+---
+
+# Scala numeric typeclass hierarchy
+
+![Alt text](http://g.gravizo.com/g?
+  digraph G {
+    size ="4,4"
+    node [shape=box]
+    Equiv -> PartialOrdering
+    PartialOrdering -> Ordering
+    Ordering -> Numeric
+    Numeric -> Integral
+    Numeric -> Fractional
+  }
+)
+
+---
+
+# Problems
+
+- All types have to support addition and multiplication
+  - No monoids, groups or semigroups
+- Some types have no ordering, but still support addition and multiplication
+  - Complex numbers, vectors
+- Some types have no meaningful notion of equality *at all*
+  - Functions
+
+---
+
+# Spire order hierarchy
+
+![Order hierarchy](http://g.gravizo.com/g?
+  digraph G {
+    node [shape=box]
+    edge [dir=back]
+    Eq -> PartialOrder
+    PartialOrder -> Order
+  }
+)
+
+---
+
+# Spire group hierarchy
+
+![Group hierarchy](http://g.gravizo.com/g?
+  digraph G {
+    node [shape=box]
+    edge [dir=back]
+    Semigroup [group=g1]
+    Monoid [group=g1]
+    Group [group=g1]
+    CSemigroup [group=g2]
+    CMonoid [group=g2]
+    AbGroup [group=g2]
+    Semigroup -> Monoid
+    Monoid -> Group
+    CSemigroup -> CMonoid
+    CMonoid -> AbGroup
+    Semigroup -> CSemigroup
+    Monoid -> CMonoid
+    Group -> AbGroup
+  }
+)
+
+---
+
+# Spire additive group hierarchy
+
+![Additive Group hierarchy](http://g.gravizo.com/g?
+  digraph G {
+    node [shape=box]
+    edge [dir=back]
+    AdditiveSemigroup [group=g2]
+    AdditiveMonoid [group=g2]
+    AdditiveGroup [group=g2]
+    AdditiveCSemigroup [group=g4]
+    AdditiveCMonoid [group=g4]
+    AdditiveAbGroup [group=g4]
+    AdditiveSemigroup -> AdditiveMonoid
+    AdditiveMonoid -> AdditiveGroup
+    AdditiveCSemigroup -> AdditiveCMonoid
+    AdditiveCMonoid -> AdditiveAbGroup
+    AdditiveSemigroup -> AdditiveCSemigroup
+    AdditiveMonoid -> AdditiveCMonoid
+    Semigroup [group=g1]
+    Monoid [group=g1]
+    Group [group=g1]
+    CSemigroup [group=g3]
+    CMonoid [group=g3]
+    AbGroup [group=g3]
+    Semigroup -> Monoid
+    Monoid -> Group
+    CSemigroup -> CMonoid
+    CMonoid -> AbGroup
+    Semigroup -> CSemigroup
+    Monoid -> CMonoid
+    Group -> AbGroup
+    AdditiveGroup -> AdditiveAbGroup
+    edge [style=dashed, constraint=false]
+    Semigroup -> AdditiveSemigroup
+    Monoid -> AdditiveMonoid
+    Group -> AdditiveGroup
+    CSemigroup -> AdditiveCSemigroup
+    CMonoid -> AdditiveCMonoid
+    AbGroup -> AdditiveAbGroup
+  }
+)
+
+---
+
+# Spire multiplicative group hierarchy
+
+![Multiplicative Group hierarchy](http://g.gravizo.com/g?
+  digraph G {
+    node [shape=box]
+    edge [dir=back]
+    MultiplicativeSemigroup [group=g2]
+    MultiplicativeMonoid [group=g2]
+    MultiplicativeGroup [group=g2]
+    MultiplicativeCSemigroup [group=g4]
+    MultiplicativeCMonoid [group=g4]
+    MultiplicativeAbGroup [group=g4]
+    MultiplicativeSemigroup -> MultiplicativeMonoid
+    MultiplicativeMonoid -> MultiplicativeGroup
+    MultiplicativeCSemigroup -> MultiplicativeCMonoid
+    MultiplicativeCMonoid -> MultiplicativeAbGroup
+    MultiplicativeSemigroup -> MultiplicativeCSemigroup
+    MultiplicativeMonoid -> MultiplicativeCMonoid
+    Semigroup [group=g1]
+    Monoid [group=g1]
+    Group [group=g1]
+    CSemigroup [group=g3]
+    CMonoid [group=g3]
+    AbGroup [group=g3]
+    Semigroup -> Monoid
+    Monoid -> Group
+    CSemigroup -> CMonoid
+    CMonoid -> AbGroup
+    Semigroup -> CSemigroup
+    Monoid -> CMonoid
+    Group -> AbGroup
+    edge [style=dashed, constraint=false]
+    Semigroup -> MultiplicativeSemigroup
+    Monoid -> MultiplicativeMonoid
+    Group -> MultiplicativeGroup
+    CSemigroup -> MultiplicativeCSemigroup
+    CMonoid -> MultiplicativeCMonoid
+    AbGroup -> MultiplicativeAbGroup
+  }
+)
+
+---
+
+# Spire ring hierarchy
+
+![Ring hierarchy](http://g.gravizo.com/g?
+  digraph G {
+    size = "4,4"
+    node [shape=box]
+    edge [dir=back]
+    AdditiveMonoid [group=g1]
+    AdditiveAbGroup [group=g1]
+    MultiplicativeSemigroup [group=g4]
+    MultiplicativeMonoid [group=g4]
+    MultiplicativeAbGroup [group=g4]
+    Semiring [group=g2]
+    Ring [group=g2]
+    CRing [group=g2]
+    EuclideanRing [group=g2]
+    Field [group=g2]
+    AdditiveMonoid -> Semiring
+    MultiplicativeSemigroup -> Semiring
+    MultiplicativeMonoid -> Rig
+    AdditiveAbGroup -> Rng
+    Semiring -> Rig
+    Semiring -> Rng
+    Rig -> Ring
+    Rng -> Ring
+    Ring -> CRing
+    CRing -> EuclideanRing
+    EuclideanRing -> Field
+    MultiplicativeAbGroup -> Field
+    edge [style=invis]
+    AdditiveMonoid -> AdditiveAbGroup
+    MultiplicativeSemigroup -> MultiplicativeMonoid
+  }
+)
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

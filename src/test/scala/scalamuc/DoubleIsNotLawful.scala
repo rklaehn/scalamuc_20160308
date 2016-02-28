@@ -5,7 +5,7 @@ import org.typelevel.discipline._
 import spire.algebra.Field
 import spire.implicits._
 
-object NonLawfulTypeClasses extends App {
+object DoubleIsNotLawful extends App {
 
   val params = Test.Parameters.default.withMinSuccessfulTests(10000)
   implicit val nonZero = Predicate[Double](_ != 0.0)
@@ -34,5 +34,4 @@ object NonLawfulTypeClasses extends App {
   checkDoubleAdditiveGroup()
   checkDoubleRing()
   checkRationalRing()
-
 }

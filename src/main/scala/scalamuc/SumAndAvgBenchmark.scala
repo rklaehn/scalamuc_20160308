@@ -6,7 +6,7 @@ import spire.algebra.Field
 /**
   * specialized generic numerical methods are exactly as fast as non-generic ones
   */
-object Demo2 extends App {
+object SumAndAvgBenchmark extends App {
 
   def sumAndAvg[@sp T: Field](elements: Array[T]): (T, T) = {
     var i = 0
@@ -33,5 +33,5 @@ object Demo2 extends App {
   val data = (0 until 1000).map(_.toDouble).toArray
 
   val th = ichi.bench.Thyme.warmed(verbose = println)
-  th.pbenchOffWarm("primitive vs. generic")(th.Warm(sumAndAvg(data)))(th.Warm(sumAndAvgDouble(data)))
+  th.pbenchOffWarm("generic vs. primitive")(th.Warm(sumAndAvg(data)))(th.Warm(sumAndAvgDouble(data)))
 }
